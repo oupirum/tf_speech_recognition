@@ -287,12 +287,12 @@ class Train:
 
 	def save(self, step_n):
 		saver = tf.train.Saver(tf.global_variables())
-		checkpoint_path = os.path.join(OPTIONS.train_dir, 'checkpoint')
-		saver.save(self._sess, checkpoint_path, global_step=step_n)
+		model_file = os.path.join(OPTIONS.train_dir, 'model.ckpt')
+		saver.save(self._sess, model_file, global_step=step_n)
 
-	def restore(self, checkpoint_file):
+	def restore(self, model_file):
 		saver = tf.train.Saver(tf.global_variables())
-		saver.restore(self._sess, checkpoint_file)
+		saver.restore(self._sess, model_file)
 		step = self._global_step.eval(session=self._sess)
 		return step
 

@@ -1,6 +1,6 @@
 import recognize
 
-model_file = './tests/train/checkpoint'
+model_file = './tests/train/model.ckpt'
 labels_file = './tests/train/labels.txt'
 
 class TestRecognize:
