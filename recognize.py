@@ -11,6 +11,9 @@ def main():
 def recognize(model_file, labels_file, wav_file):
 	sess = tf.InteractiveSession()
 	load_model(sess, model_file)
+	softmax = tf.nn.softmax(
+			sess.graph.get_operation_by_name('MatMul').outputs[0],
+			1)
 
 	labels = read_labels(labels_file)
 	scores_filter = ScoreFilter(labels)
@@ -45,7 +48,7 @@ def recognize(model_file, labels_file, wav_file):
 		fingerprint = result[0].flatten()
 		fingerprint = fingerprint.reshape([1, len(fingerprint)])
 
-		result = sess.run(['MatMul:0'], feed_dict={
+		result = sess.run([softmax], feed_dict={
 			'fingerprint_pl:0': fingerprint,
 			'dropout_pl:0': 1.0
 		})
@@ -165,7 +168,7 @@ def argparser():
 	parser.add_argument(
 			'--score_threshold',
 			type=float,
-			default=2.6)
+			default=0.35)
 
 	return parser
 
